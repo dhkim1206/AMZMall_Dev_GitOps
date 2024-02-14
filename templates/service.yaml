@@ -1,0 +1,17 @@
+# AMZMALL_DEV_GITOPS/tempaltes/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "amzmall.fullname" . }}
+  labels:
+    {{- include "amzmall.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080  # 변경된 부분: 포트 이름 대신 실제 컨테이너 포트 번호를 사용
+      nodePort: {{ .Values.service.nodePort }}
+      protocol: TCP
+  selector:
+    {{- include "amzmall.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,33 @@
+# AMZMALL_DEV_GITOPS/values.yaml
+
+replicaCount: 2
+
+image:
+  repository: 009946608368.dkr.ecr.ap-northeast-2.amazonaws.com/amzdraw-dev
+  pullPolicy: IfNotPresent
+  # 이미지 태그를 지정 비워두면 Chart.yaml의 appVersion을 사용
+  tag: ""
+
+imagePullSecrets:
+  - name: ecr-secret
+
+service:
+  type: NodePort
+  port: 8080
+  # NodePort 서비스를 사용할 때 외부에 노출할 포트 번호를 지정
+  nodePort: 30007
+
+nodeSelector:
+  Name: "service_node_group"
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+
+tolerations: []
+
+affinity: {}
