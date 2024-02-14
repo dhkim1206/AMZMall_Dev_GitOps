@@ -1,1 +1,1 @@
-# AMZMall_Dev_GitOps-
+# AMZMall_Dev_GitOps
