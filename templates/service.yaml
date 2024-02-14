@@ -10,6 +10,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
+      # targetPort: http
       targetPort: 8080  # 변경된 부분: 포트 이름 대신 실제 컨테이너 포트 번호를 사용
       nodePort: {{ .Values.service.nodePort }}
       protocol: TCP
