@@ -1,6 +1,7 @@
 # AMZMall_Dev_GitOps
 
 ## 🗂️ 폴더 구조
+```
 ├── backend
 │   ├── Chart.yaml
 │   ├── values.yaml
@@ -8,7 +9,7 @@
 │       ├── _helpers.tpl
 │       ├── deployment.yaml
 │       ├── service.yaml
-│       └── ingress.yaml
+│       └── ingress.yaml 
 └── frontend
     ├── Chart.yaml
     ├── values.yaml
@@ -17,3 +18,5 @@
         ├── deployment.yaml
         ├── service.yaml
         └── ingress.yaml
+```
+
