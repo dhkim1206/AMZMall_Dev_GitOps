@@ -18,18 +18,4 @@ service:
   nodePort: 30007
 
 nodeSelector:
-  # Name: "service_node_group"
   eks.amazonaws.com/nodegroup: "service_node_group-20240218121856709200000003"
-# 각 Pod가 최소 64MiB의 메모리와 250m CPU를 요청, 최대 128MiB의 메모리와 500m CPU까지 사용할 수 있음
-#  여기서 'm'은 밀리코어를 의미하며, 1000m은 1 vCPU/core
-# resources:
-#   requests:
-#     memory: "64Mi"
-#     cpu: "250m"
-#   limits:
-#     memory: "128Mi"
-#     cpu: "500m"
-
-tolerations: []
-
-affinity: {}
