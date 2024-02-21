@@ -1,2 +1,2 @@
 
-## 🧑🏻‍💻 AMZMall_Dev_GitOps_bacend
+## 🧑🏻‍💻 AMZMall_Dev_GitOps_backend
