@@ -1,0 +1,9 @@
+# AMZMALL_DEV_GITOPS/Chart.yaml
+
+apiVersion: v2
+name: amzdraw-spring
+description: "Spring application server"
+type: application
+
+version: 0.1.0
+appVersion: "0.1.0"
