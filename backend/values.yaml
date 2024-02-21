@@ -1,6 +1,6 @@
 # AMZMALL_DEV_GITOPS/values.yaml
 
-replicaCount: 2
+replicaCount: 3
 
 image:
   repository: 009946608368.dkr.ecr.ap-northeast-2.amazonaws.com/amzdraw-dev
