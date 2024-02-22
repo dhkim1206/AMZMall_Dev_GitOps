@@ -1,21 +1,22 @@
- # AMZMALL_DEV_GITOPS/tempaltes/ingress.yaml
+ # AMZMALL_DEV_GITOPS/backend/tempaltes/ingress.yaml
 
 # 예상 시나리오
 # 1.사용자가 HTTP를 통해 웹사이트에 접속
-  # 1-1) 사용자가 브라우저에서 http://example.com을 입력하고 웹사이트에 접속하려고 합니다.
+  # 1-1) 사용자가 브라우저에서 http://www.amzdraw.shop을 입력하고 웹사이트에 접속
 
 # 2. ALB가 HTTP 리스너를 통해 요청을 수신
   # 2-1) ALB에는 80 포트(HTTP) 리스너가 설정되어 있으며, 사용자의 요청을 받는다
 
 # 3.ALB는 요청을 HTTPS로 리다이렉션
-  # 3-1) ALB에 설정된 규칙(어노테이션을 통해 설정)에 따라, 
-  # 3-2) 사용자의 HTTP 요청은 301 Moved Permanently 상태 코드와 함께 HTTPS URL(https://example.com)로 리다이렉션
+  # 3-1) ALB는 alb.ingress.kubernetes.io/actions.ssl-redirect 어노테이션에 정의된 규칙에 따라 
+  # 3-2) 사용자의 HTTP 요청은 301 Moved Permanently 상태 코드와 함께 HTTPS URL(https://www.amzdraw.shop)로 리다이렉션
 
 # 4. 사용자의 브라우저가 리다이렉션을 따릅니다:
-  # 4-1) 브라우저는 ALB로부터 받은 리다이렉션 응답을 처리하고, 자동으로 https://example.com으로 새 요청
+  # 4-1) 브라우저는 ALB로부터 받은 리다이렉션 응답을 처리하고, 자동으로 https://www.amzdraw.shop으로 새 요청
 
 # 5. ALB가 HTTPS 리스너를 통해 새 요청을 수신
-  # 5-1) 이번에는 ALB의 443 포트(HTTPS) 리스너가 사용자의 요청
+  # 5-1) 이번에는 ALB의 443 포트(HTTPS) 리스너가 사용자의 요청을 받습니다. 
+  # 5-2) ALB는 alb.ingress.kubernetes.io/certificate-arn 어노테이션에 지정된 ACM에서 발급한 SSL/TLS 인증서를 사용하여 요청을 암호화
 
 # 6. ALB는 인증서를 사용해 요청을 암호화하고 백엔드로 전달
   # 6-1) ACM에서 발급한 SSL/TLS 인증서를 사용하여 요청을 암호화하고,
@@ -38,43 +39,21 @@ metadata:
     # 보안그룹 지정
     alb.ingress.kubernetes.io/security-groups: "sg-0fd7f57693976e947"
 
-    # # HTTP로 접속한 트래픽을 HTTPS로 리다이렉션
-    # # 베스트 프랙티스로 모든 HTTP 트래픽을 HTTPS로 리다이렉션하는 것이 표준
-    # # 이는 데이터의 무결성과 기밀성을 보장하며, 중간자 공격(man-in-the-middle attacks)으로부터 사용자를 보호
-    # alb.ingress.kubernetes.io/actions.ssl-redirect: >
-    #   {"Type":"redirect","RedirectConfig":{"Protocol":"HTTPS","Port":"443","StatusCode":"HTTP_301"}}
-
-
-# SSL 리다이렉션 경로:
-
-
-
-# port.name: use-annotation는 이 리다이렉션 규칙이 어노테이션에 정의된 ssl-redirect 액션을 사용해야 함을 나타냄
-# 기본 애플리케이션 경로:
-
+    # HTTP로 접속한 트래픽을 HTTPS로 리다이렉션
+    # 베스트 프랙티스로 모든 HTTP 트래픽을 HTTPS로 리다이렉션하는 것이 표준
+    # 이는 데이터의 무결성과 기밀성을 보장하며, 중간자 공격(man-in-the-middle attacks)으로부터 사용자를 보호
+    alb.ingress.kubernetes.io/actions.ssl-redirect: >
+      {"Type":"redirect","RedirectConfig":{"Protocol":"HTTPS","Port":"443","StatusCode":"HTTP_301"}}
 
 spec:
   rules:
-    - http:
-        paths:
-        # # path: /* 부분은 모든 요청을 포착하는 와일드카드 경로입니다. 즉, 이 경로 설정은 들어오는 모든 HTTP 요청을 처리
-        #   - path: /*
-        #     pathType: Prefix
-        #     # backend.service.name: ssl-redirect는 AWS Load Balancer Controller에 의해 참조되는 내부 리다이렉션 규칙
-        #     # 실제 쿠버네티스 서비스가 아닌, alb.ingress.kubernetes.io/actions.ssl-redirect 어노테이션에 의해 정의된 리다이렉션 규칙
-        #     backend:
-        #       service:
-        #         name: ssl-redirect
-        #         port:
-        #           name: use-annotation
-        #   # path: / 부분은 루트 URL에 대한 요청을 처리
-        #   # 여기서는 사용자가 HTTPS를 통해 https://example.com에 접속하면 이 경로 규칙이 적용
-          - path: /
-            pathType: Prefix
-            # backend.service.name: {{ include "amzmall.fullname" . }}는 실제 쿠버네티스 서비스를 참조하며, 이 서비스는 트래픽을 처리할 애플리케이션의 백엔드를 나타냄
-            backend:
-            # port.number: 8080는 해당 서비스가 내부적으로 듣고 있는 포트 번호를 지정. 즉, HTTPS를 통해 ALB로 들어온 요청은 내부적으로 8080 포트로 라우팅되어 처리
-              service:
-                name: {{ include "amzmall.fullname" . }}
-                port:
-                  number: 8080
+  - host: "www.amzdraw.shop"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "amzmall.fullname" . }}
+            port:
+              number: 8080

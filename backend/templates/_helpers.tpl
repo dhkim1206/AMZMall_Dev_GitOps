@@ -1,3 +1,4 @@
+
 {{/*
 Expand the name of the chart.
 */}}
@@ -26,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "amzmall.chart" -}}
+{{- define "amzdraw.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "amzmall.labels" -}}
-helm.sh/chart: {{ include "amzmall.chart" . }}
-{{ include "amzmall.selectorLabels" . }}
+{{- define "amzdraw.labels" -}}
+helm.sh/chart: {{ include "amzdraw.chart" . }}
+{{ include "amzdraw.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "amzmall.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "amzmall.name" . }}
+{{- define "amzdraw.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "amzdraw.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "amzmall.serviceAccountName" -}}
+{{- define "amzdraw.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "amzmall.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "amzdraw.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

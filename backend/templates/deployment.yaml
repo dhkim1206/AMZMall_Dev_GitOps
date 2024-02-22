@@ -1,4 +1,4 @@
-# AMZMALL_DEV_GITOPS/tempaltes/deployment.yaml
+# AMZMALL_DEV_GITOPS/backend/tempaltes/deployment.yaml
 
 apiVersion: apps/v1
 kind: Deployment

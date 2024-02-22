@@ -1,4 +1,4 @@
-# AMZMALL_DEV_GITOPS/tempaltes/service.yaml
+# AMZMALL_DEV_GITOPS/backend/tempaltes/service.yaml
 
 apiVersion: v1
 kind: Service

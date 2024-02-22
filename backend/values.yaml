@@ -1,4 +1,4 @@
-# AMZMALL_DEV_GITOPS/values.yaml
+# AMZMALL_DEV_GITOPS/backend/values.yaml
 
 replicaCount: 2
 
