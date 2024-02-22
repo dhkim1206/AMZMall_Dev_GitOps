@@ -1,11 +1,11 @@
-# AMZMALL_DEV_GITOPS/backend/tempaltes/service.yaml
+# AMZDRAW_DEV_GITOPS/backend/tempaltes/service.yaml
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "amzmall.fullname" . }}
+  name: {{ include "amzdraw.fullname" . }}
   labels:
-    {{- include "amzmall.labels" . | nindent 4 }}
+    {{- include "amzdraw.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,4 +15,4 @@ spec:
       nodePort: {{ .Values.service.nodePort }}
       protocol: TCP
   selector:
-    {{- include "amzmall.selectorLabels" . | nindent 4 }}
+    {{- include "amzdraw.selectorLabels" . | nindent 4 }}
