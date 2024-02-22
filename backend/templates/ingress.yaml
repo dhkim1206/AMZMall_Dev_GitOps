@@ -1,4 +1,4 @@
- # AMZMALL_DEV_GITOPS/backend/tempaltes/ingress.yaml
+ # AMZDRAW_DEV_GITOPS/backend/tempaltes/ingress.yaml
 
 # 예상 시나리오
 # 1.사용자가 HTTP를 통해 웹사이트에 접속
@@ -20,14 +20,14 @@
 
 # 6. ALB는 인증서를 사용해 요청을 암호화하고 백엔드로 전달
   # 6-1) ACM에서 발급한 SSL/TLS 인증서를 사용하여 요청을 암호화하고,
-  # 6-2) 설정된 백엔드 서비스(예: amzmall.fullname 서비스)로 전달
+  # 6-2) 설정된 백엔드 서비스(예: amzdraw.fullname 서비스)로 전달
   # 6-3) 이 경우, 서비스는 내부적으로 8080 포트를 사용하여 트래픽을 처리
 
 # 최종 결과 - 사용자는 보안된 연결을 통해 웹사이트에 접속합니다:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "amzmall.fullname" . }}
+  name: {{ include "amzdraw.fullname" . }}
   annotations:
     kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: "internet-facing"
@@ -54,6 +54,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ include "amzmall.fullname" . }}
+            name: {{ include "amzdraw.fullname" . }}
             port:
               number: 8080
