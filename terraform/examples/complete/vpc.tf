@@ -68,106 +68,81 @@ resource "aws_internet_gateway" "igw" {
 # NAT Instance
 ################################################################################
 
-# # 보안그룹 - NAT Instance
-# resource "aws_security_group" "nat_instance_sg" {
-#   name        = "nat-instance-sg"
-#   description = "Security group for NAT instance"
-#   vpc_id      = aws_vpc.amz_draw_vpc.id
+# 보안그룹 - NAT Instance
+resource "aws_security_group" "nat_instance_sg" {
+  name        = "nat-instance-sg"
+  description = "Security group for NAT instance"
+  vpc_id      = aws_vpc.amz_draw_vpc.id
 
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-#   tags = {
-#     Name = "nat-instance-sg"
-#   }
-# }
+  tags = {
+    Name = "nat-instance-sg"
+  }
+}
 
-# # NAT Instance 1
-# resource "aws_instance" "nat_instance_1" {
-#   ami           = "ami-08074b02473276b92"
-#   instance_type = "t2.micro"
-#   subnet_id     = aws_subnet.public_subnet_1.id # 첫 번째 퍼블릭 서브넷의 ID
-#   security_groups = [aws_security_group.nat_instance_sg.id]
+# NAT Instance 1
+resource "aws_instance" "nat_instance_1" {
+  ami           = "ami-08074b02473276b92"
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.public_subnet_1.id # 첫 번째 퍼블릭 서브넷의 ID
+  security_groups = [aws_security_group.nat_instance_sg.id]
 
-#   associate_public_ip_address = true
-#   source_dest_check = false
+  associate_public_ip_address = true
+  source_dest_check = false
 
-#   tags = {
-#     Name = "NAT-Instance"
-#   }
-# }
+  tags = {
+    Name = "${var.infra_name}-NAT-Instance"
+  }
+}
 
-# # 탄력적 ip 할당
-# resource "aws_eip" "nat_eip" {
-#   domain = "vpc"
-# }
+# 탄력적 ip 할당
+resource "aws_eip" "nat_eip" {
+  domain = "vpc"
+}
 
-# # 탄력적 ip 연결
-# resource "aws_eip_association" "eip_assoc" {
-#   instance_id   = aws_instance.nat_instance_1.id
-#   allocation_id = aws_eip.nat_eip.id
-# }
+# 탄력적 ip 연결
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.nat_instance_1.id
+  allocation_id = aws_eip.nat_eip.id
+}
 
-# # NAT Instance 2
-# resource "aws_instance" "nat_instance_2" {
-#   ami           = "ami-08074b02473276b92"
-#   instance_type = "t2.micro"
-#   subnet_id     = aws_subnet.public_subnet_2.id
-#   security_groups = [aws_security_group.nat_instance_sg.id]
-
-#   associate_public_ip_address = true
-#   source_dest_check = false
-
-#   tags = {
-#     Name = "NAT-Instance-2"
-#   }
-# }
-
-# # NAT Instance 탄력적 ip 2
-# resource "aws_eip" "nat_eip_2" {
-#   domain = "vpc"
-# }
-
-# # NAT Instance 탄력적 IP 연결 2
-# resource "aws_eip_association" "eip_assoc2" {
-#   instance_id   = aws_instance.nat_instance_2.id
-#   allocation_id = aws_eip.nat_eip_2.id
-# }
 
 ################################################################################
 # NAT GateWay
 ################################################################################
 
 
-resource "aws_eip" "nat_eip_1" {
-  domain = "vpc"
-  depends_on = [aws_internet_gateway.igw]
-}
+# resource "aws_eip" "nat_eip_1" {
+#   domain = "vpc"
+#   depends_on = [aws_internet_gateway.igw]
+# }
 
-resource "aws_nat_gateway" "nat_gw_1" {
-  allocation_id = aws_eip.nat_eip_1.id
-  subnet_id     = aws_subnet.public_subnet_1.id
-  tags = {
-    Name = "${var.infra_name}_nat_gw_1"
-  }
-}
+# resource "aws_nat_gateway" "nat_gw_1" {
+#   allocation_id = aws_eip.nat_eip_1.id
+#   subnet_id     = aws_subnet.public_subnet_1.id
+#   tags = {
+#     Name = "${var.infra_name}_nat_gw_1"
+#   }
+# }
 
-resource "aws_eip" "nat_eip_2" {
-  domain = "vpc"
-  depends_on = [aws_internet_gateway.igw]
-}
+# resource "aws_eip" "nat_eip_2" {
+#   domain = "vpc"
+#   depends_on = [aws_internet_gateway.igw]
+# }
 
-resource "aws_nat_gateway" "nat_gw_2" {
-  allocation_id = aws_eip.nat_eip_2.id
-  subnet_id     = aws_subnet.public_subnet_2.id
-  tags = {
-    Name = "${var.infra_name}_nat_gw_2"
-  }
-}
+# resource "aws_nat_gateway" "nat_gw_2" {
+#   allocation_id = aws_eip.nat_eip_2.id
+#   subnet_id     = aws_subnet.public_subnet_2.id
+#   tags = {
+#     Name = "${var.infra_name}_nat_gw_2"
+#   }
+# }
 ################################################################################
 # private route table
 ################################################################################
@@ -199,29 +174,29 @@ resource "aws_route_table_association" "private_subnet_2_association" {
 # private route - NAT Instance
 ################################################################################
 
-# # 라우팅 지정 ( Private Subnet -> NAT )
-# resource "aws_route" "private_to_nat" {
-#   route_table_id         = aws_route_table.private_rt.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   network_interface_id = data.aws_network_interface.nat_instance_1_ni.id
-# }
+# 라우팅 지정 ( Private Subnet -> NAT )
+resource "aws_route" "private_to_nat" {
+  route_table_id         = aws_route_table.private_rt.id
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id = data.aws_network_interface.nat_instance_1_ni.id
+}
 
-# # 네트워크 인터페이스 생성
-# data "aws_network_interface" "nat_instance_1_ni" {
-#   filter {
-#     name   = "attachment.instance-id"
-#     values = [aws_instance.nat_instance_1.id]
-#   }
-# }
+# 네트워크 인터페이스 생성
+data "aws_network_interface" "nat_instance_1_ni" {
+  filter {
+    name   = "attachment.instance-id"
+    values = [aws_instance.nat_instance_1.id]
+  }
+}
 
 ################################################################################
 # private route table - NAT GW
 ################################################################################
-resource "aws_route" "private_rt_nat_gw_1" {
-  route_table_id         = aws_route_table.private_rt.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw_1.id
-}
+# resource "aws_route" "private_rt_nat_gw_1" {
+#   route_table_id         = aws_route_table.private_rt.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.nat_gw_1.id
+# }
 ################################################################################
 # public route table
 ################################################################################
