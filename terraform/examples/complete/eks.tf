@@ -16,6 +16,7 @@ module "eks" {
 
   # 클러스터 이름
   cluster_name = var.cluster_name
+  
 
   # 퍼블릭에서 클러스터 엔드포인트 연결 허용
   cluster_endpoint_public_access = true
