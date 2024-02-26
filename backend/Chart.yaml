@@ -1,4 +1,4 @@
-# AMZMALL_DEV_GITOPS/backend/Chart.yaml
+# AMZDRAW_DEV_GITOPS/backend/Chart.yaml
 
 apiVersion: v2
 name: amzdraw-spring

@@ -30,7 +30,9 @@ metadata:
   name: {{ include "amzdraw.fullname" . }}
   annotations:
     kubernetes.io/ingress.class: "alb"
+    # ALB가 인터넷에접근 가능하도록 설정
     alb.ingress.kubernetes.io/scheme: "internet-facing"
+    # 타겟을 IP 기반으로 설정
     alb.ingress.kubernetes.io/target-type: "ip"
     # HTTP 리스너와 HTTPS 리스너를 모두 추가
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
