@@ -13,6 +13,7 @@ resource "helm_release" "argocd" {
   namespace  = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
+  version    = "6.4.0"
 
   set {
     name  = "server.extraArgs"
