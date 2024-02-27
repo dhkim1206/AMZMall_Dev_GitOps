@@ -110,6 +110,9 @@ iam_role_additional_policies = {
       tags = {
         ExtraTag = "service_node_group"
       }
+    labels = {
+      node_group = "service_node_group"
+    }
     }
     # 에코 시스템용 노드 그룹
     eco_system_node_group = {
@@ -123,6 +126,9 @@ iam_role_additional_policies = {
       subnet_ids     = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id] #[aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id] # 프라이빗 서브넷 ID
       tags = {
         ExtraTag = "eco_system_node_group"
+      }
+      labels = {
+        node_group = "service_node_group"
       }
     }
     # search_node_group = {

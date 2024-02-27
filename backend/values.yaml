@@ -18,4 +18,4 @@ service:
   nodePort: 30007
 
 nodeSelector:
-  eks.amazonaws.com/nodegroup: "service_node_group-20240218121856709200000003"
+  node_group: "service_node_group"
