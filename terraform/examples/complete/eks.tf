@@ -128,7 +128,7 @@ iam_role_additional_policies = {
         ExtraTag = "eco_system_node_group"
       }
       labels = {
-        node_group = "service_node_group"
+        node_group = "eco_system_node_group"
       }
     }
     # search_node_group = {
