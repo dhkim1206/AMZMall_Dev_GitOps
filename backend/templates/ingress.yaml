@@ -38,8 +38,6 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     # ACM 설정
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-northeast-2:009946608368:certificate/f44c8be0-432d-4e90-934a-aa3d768c9ace"
-    # 보안그룹 지정
-    alb.ingress.kubernetes.io/security-groups: "sg-0fd7f57693976e947"
 
     # HTTP로 접속한 트래픽을 HTTPS로 리다이렉션
     # 베스트 프랙티스로 모든 HTTP 트래픽을 HTTPS로 리다이렉션하는 것이 표준
