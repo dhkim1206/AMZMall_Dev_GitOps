@@ -19,3 +19,9 @@ service:
 
 nodeSelector:
   node_group: "service_node_group"
+
+hpa:
+  enabled: false  # HPA 활성화 플래그 추가 
+  minReplicas: 2 # 최소 복제
+  maxReplicas: 4 # 최대 복제  
+  targetCPUUtilizationPercentage: 30 # CPU 사용률
