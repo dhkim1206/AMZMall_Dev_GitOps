@@ -6,7 +6,7 @@ image:
   repository: 009946608368.dkr.ecr.ap-northeast-2.amazonaws.com/amzdraw-dev
   pullPolicy: IfNotPresent
   # 이미지 태그를 지정 비워두면 Chart.yaml의 appVersion을 사용
-  tag: 2024-02-29T14-50-44
+  tag: 2024-02-29T16-03-50
 
 imagePullSecrets:
   - name: ecr-secret
