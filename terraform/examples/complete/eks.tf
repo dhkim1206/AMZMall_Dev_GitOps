@@ -43,7 +43,6 @@ module "eks" {
     }
   }
 
-
   # 외부 암호화 키 사용 설정
 
   #  AWS에서 생성한 KMS 키 대신 사용자가 지정한
@@ -177,14 +176,13 @@ iam_role_additional_policies = {
   tags = {
     "Name" = var.infra_name
   }
-     # Create a new cluster where both an identity provider and Fargate profile is created
-  # will result in conflicts since only one can take place at a time
+  # Fargate 프로필과 동시에 생성하려고 하면 출동 발생 할 수 있음
   # # OIDC Identity provider
-  # cluster_identity_providers = {
-  #   sts = {
-  #     client_id = "sts.amazonaws.com"
-  #   }
-  # }
+  cluster_identity_providers = {
+    sts = {
+      client_id = "sts.amazonaws.com"
+    }
+  }
 }
 
 ################################################################################
