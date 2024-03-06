@@ -1,67 +1,65 @@
 # # C:\Users\user\Documents\GitHub\AMZMall_Dev_GitOps\terraform\examples\complete\ebs.tf
-# resource "aws_iam_policy" "ebs_csi_policy" {
-#   name        = "ebs-csi-policy"
-#   description = "Policy for EBS CSI driver"
-#   policy      = data.aws_iam_policy_document.ebs_csi_policy.json
-# }
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect = "Allow"
+    principals {
+      type        = "Federated"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")}"]
+    }
 
-# data "aws_iam_policy_document" "ebs_csi_policy" {
-#   statement {
-#     actions   = ["ec2:CreateSnapshot", "ec2:AttachVolume", "ec2:DetachVolume", "ec2:ModifyVolume", "ec2:DescribeVolumes", "ec2:DeleteSnapshot", "ec2:CreateVolume", "ec2:DescribeSnapshots", "ec2:DeleteVolume"]
-#     resources = ["*"]
-#   }
-# }
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:ebs-csi-controller"]
+    }
+  }
+}
 
-# resource "aws_iam_role" "ebs_csi_role" {
-#   name = "ebs-csi-role"
+resource "kubernetes_service_account" "ebs_csi_controller_sa" {
+  metadata {
+    name        = "ebs-csi-controller"
+    namespace   = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.ebs_csi_role.arn
+    }
+  }
+}
+resource "aws_iam_role" "ebs_csi_role" {
+  name = "${var.cluster_name}-ebs-csi-role"
 
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = "sts:AssumeRole"
-#         Effect = "Allow"
-#         Principal = {
-#           Service = "ec2.amazonaws.com"
-#         }
-#       },
-#     ]
-#   })
-# }
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 
-# resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attach" {
-#   policy_arn = aws_iam_policy.ebs_csi_policy.arn
-#   role       = aws_iam_role.ebs_csi_role.name
-# }
+  tags = {
+    "Name" = "${var.cluster_name}-ebs-csi-role"
+  }
+}
 
-# resource "helm_release" "ebs_csi_driver" {
-#   name       = "aws-ebs-csi-driver"
-#   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver/"
-#   chart      = "aws-ebs-csi-driver"
-#   version    = "2.28.1"
+resource "aws_iam_policy" "ebs_csi_policy" {
+  name        = "${var.cluster_name}-ebs-csi-policy"
+  description = "Policy for EBS CSI driver"
 
-#   set {
-#     name  = "enableVolumeScheduling"
-#     value = "true"
-#   }
+  policy = file("${path.module}/policy/ebs_csi_policy.json")
+}
 
-#   set {
-#     name  = "enableVolumeResizing"
-#     value = "true"
-#   }
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
+  role       = aws_iam_role.ebs_csi_role.name
+  policy_arn = aws_iam_policy.ebs_csi_policy.arn
+}
 
-#   set {
-#     name  = "enableVolumeSnapshot"
-#     value = "true"
-#   }
+resource "helm_release" "ebs_csi_driver" {
+  name       = "aws-ebs-csi-driver"
+  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver/"
+  chart      = "aws-ebs-csi-driver"
+  namespace  = "kube-system"
 
-#   set {
-#     name  = "serviceAccount.controller.create"
-#     value = "false"
-#   }
+  set {
+    name  = "serviceAccount.controller.create"
+    value = "false"
+  }
 
-#   set {
-#     name  = "serviceAccount.controller.name"
-#     value = aws_iam_role.ebs_csi_role.name
-#   }
-# }
+  set {
+    name  = "serviceAccount.controller.name"
+    value = kubernetes_service_account.ebs_csi_controller_sa.metadata[0].name
+  }
+}
