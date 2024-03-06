@@ -1,5 +1,3 @@
-# AMZDRAW_DEV_GITOPS/backend/tempaltes/deployment.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,3 +28,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: DB_PASSWORD
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: DB_URL
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: DB_USER
+            - name: TOSS_CLIENT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: TOSS_CLIENT_KEY
+            - name: TOSS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: TOSS_SECRET_KEY
