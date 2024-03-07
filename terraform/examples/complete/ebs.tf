@@ -88,7 +88,7 @@ resource "null_resource" "update_storageclass" {
     always_run = "${timestamp()}"
   }
 
-  provisioner "local-exec" {
-    command = "sh ./update-sc.sh"
-  }
+  # provisioner "local-exec" {
+  #   command = "sh ./update-sc.sh"
+  # }
 }
