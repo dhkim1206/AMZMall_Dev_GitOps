@@ -63,3 +63,32 @@ resource "helm_release" "ebs_csi_driver" {
     value = kubernetes_service_account.ebs_csi_controller_sa.metadata[0].name
   }
 }
+
+resource "kubernetes_storage_class" "ebs_storage_class" {
+  metadata {
+    name = "amzdraw-ebs"
+    annotations = {
+      "storageclass.kubernetes.io/is-default-class" = "true"
+    }
+  }
+
+  storage_provisioner = "kubernetes.io/aws-ebs"
+
+  parameters = {
+    type = "gp3"
+  }  
+  reclaim_policy = "Retain"
+  volume_binding_mode = "WaitForFirstConsumer"
+  allow_volume_expansion = true
+
+}
+
+resource "null_resource" "update_storageclass" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "sh ./update-sc.sh"
+  }
+}
