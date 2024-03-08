@@ -30,11 +30,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"  # Minimum CPU required.
-              memory: "128Mi"  # Minimum memory required.
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
             limits:
-              cpu: "200m"  # Maximum CPU allowed.
-              memory: "256Mi"  # Maximum memory allowed.
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}  
           env:
             - name: DB_PASSWORD
               valueFrom:
