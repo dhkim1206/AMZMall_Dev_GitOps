@@ -54,3 +54,13 @@ spec:
                 secretKeyRef:
                   name: my-secret
                   key: TOSS_SECRET_KEY
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: S3_ACCESS_KEY
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: S3_SECRET_KEY
