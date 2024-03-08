@@ -5,7 +5,6 @@ replicaCount: 2
 image:
   repository: 009946608368.dkr.ecr.ap-northeast-2.amazonaws.com/amzdraw-dev
   pullPolicy: IfNotPresent
-  # 이미지 태그를 지정 비워두면 Chart.yaml의 appVersion을 사용
   tag: 2024-03-08T15-26-45
 
 imagePullSecrets:
@@ -14,14 +13,21 @@ imagePullSecrets:
 service:
   type: NodePort
   port: 8080
-  # NodePort 서비스를 사용할 때 외부에 노출할 포트 번호를 지정
   nodePort: 30007
 
 nodeSelector:
   node_group: "service_node_group"
 
 hpa:
-  enabled: false  # HPA 활성화 플래그 추가 
-  minReplicas: 2 # 최소 복제
-  maxReplicas: 4 # 최대 복제  
-  targetCPUUtilizationPercentage: 30 # CPU 사용률
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 30
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
