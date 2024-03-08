@@ -28,6 +28,13 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"  # Minimum CPU required.
+              memory: "128Mi"  # Minimum memory required.
+            limits:
+              cpu: "200m"  # Maximum CPU allowed.
+              memory: "256Mi"  # Maximum memory allowed.
           env:
             - name: DB_PASSWORD
               valueFrom:
