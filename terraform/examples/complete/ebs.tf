@@ -82,13 +82,3 @@ resource "kubernetes_storage_class" "ebs_storage_class" {
   allow_volume_expansion = true
 
 }
-
-resource "null_resource" "update_storageclass" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  # provisioner "local-exec" {
-  #   command = "sh ./update-sc.sh"
-  # }
-}

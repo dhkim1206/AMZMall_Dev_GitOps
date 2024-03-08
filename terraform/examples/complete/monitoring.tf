@@ -14,6 +14,5 @@ resource "helm_release" "kube-prometheus-stack" {
   chart      = "kube-prometheus-stack"
   namespace  = "monitoring"
 
-  depends_on = [ null_resource.update_storageclass ]
 }
 
