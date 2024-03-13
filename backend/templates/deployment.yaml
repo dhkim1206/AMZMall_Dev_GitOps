@@ -75,4 +75,14 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: my-secret
-                  key: AMAZON_S3_BUCKET
+                  key: AMAZON_S3_BUCKET            
+            - name: COGNITO_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: COGNITO_CLIENT_ID
+            - name: COGNITO_POOL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: COGNITO_POOL_ID

@@ -10,7 +10,11 @@ resource "aws_iam_policy" "fluent_bit_cloudwatch_policy" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
+        "logs:DescribeLogStreams",
+        "cloudwatch:PutMetricData",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeTags",
+        "logs:DescribeLogGroups",
       ],
       Effect   = "Allow",
       Resource = "*"
