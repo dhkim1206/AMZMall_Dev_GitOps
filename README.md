@@ -1,6 +1,6 @@
 
 ## 🧑🏻‍💻 AMZMall_Dev_GitOps  
-
+GitOps test version 1.0
 > **이 레포지토리는 AMZMall의 개발 환경을 위한 GitOps 구성 및 인프라 코드를 정의합니다.  
 
 ### 🗂️ directory
