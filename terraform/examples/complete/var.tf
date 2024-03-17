@@ -1,3 +1,4 @@
+# C:\AMZMall_Dev_GitOps\terraform\examples\complete\var.tf
 variable "aws_region" {
   type    = string
   description = "The AWS region to deploy resources into"

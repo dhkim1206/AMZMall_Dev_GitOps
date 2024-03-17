@@ -1,0 +1,30 @@
+# C:\AMZMall_Dev_GitOps\terraform\examples\complete\values\ca-values.yaml
+autoDiscovery:
+  clusterName: "amz-draw-dev-cluster"
+  tags:
+    - k8s.io/cluster-autoscaler/enabled
+    - k8s.io/cluster-autoscaler/amz-draw-dev-cluster
+
+cloudProvider: aws
+awsRegion: "ap-northeast-2"
+
+image:
+  repository: registry.k8s.io/autoscaling/cluster-autoscaler
+  tag: "v1.28.0"
+  pullPolicy: IfNotPresent
+
+rbac:
+  create: true
+  serviceAccount:
+    create: true
+    name: ""  # Terraform에서 동적으로 설정
+
+extraArgs:
+  v: 4
+  stderrthreshold: info
+  logtostderr: true
+  scan-interval: 10s
+  scale-down-delay-after-add: 10m
+  scale-down-delay-after-delete: 10s
+  scale-down-delay-after-failure: 3m
+  scale-down-unneeded-time: 10m
