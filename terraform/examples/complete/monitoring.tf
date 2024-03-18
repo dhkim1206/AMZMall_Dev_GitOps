@@ -71,3 +71,60 @@ resource "helm_release" "loki" {
 
   values = [file("${path.module}/values/loki-values.yaml")]
 }
+
+
+# promtail 배포
+resource "helm_release" "promtail" {
+  name       = "promtail"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "promtail"
+  namespace  = "monitoring"
+
+  values = [file("${path.module}/values/promtail-values.yaml")]
+}
+
+# prometheus, grafana 설치
+resource "helm_release" "prometheus_grafana" {
+  name       = "prometheus"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart      = "kube-prometheus-stack"
+  namespace  = "monitoring"
+
+}
+
+# grafana
+resource "kubernetes_ingress_v1" "grafana_ingress" {
+  metadata {
+    name        = "grafana-ingress"
+    namespace   = "monitoring"
+    annotations = {
+      "kubernetes.io/ingress.class"               = "alb"
+      "alb.ingress.kubernetes.io/scheme"          = "internet-facing"
+      "alb.ingress.kubernetes.io/listen-ports"    = jsonencode([{"HTTPS": 443},{"HTTP": 80}])
+      "alb.ingress.kubernetes.io/certificate-arn" = "arn:aws:acm:ap-northeast-2:009946608368:certificate/f44c8be0-432d-4e90-934a-aa3d768c9ace"
+      "alb.ingress.kubernetes.io/ssl-redirect"    = "443"
+      "alb.ingress.kubernetes.io/target-type"     = "ip"
+    }
+  }
+
+  spec {
+    rule {
+      host = "grafana.amzdraw.shop"
+      http {
+        path {
+          path = "/*"
+          path_type = "ImplementationSpecific"
+          backend {
+            service {
+              name = "prometheus-grafana"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  depends_on = [ helm_release.prometheus_grafana ]
+}
