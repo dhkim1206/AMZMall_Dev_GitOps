@@ -1,3 +1,4 @@
+# C:\AMZMall_Dev_GitOps\terraform\examples\complete\values\loki-values.yaml
 loki:
   server:
     http_listen_port: 3100
@@ -43,7 +44,7 @@ loki:
     storage_config:
       aws:
         region: ap-northeast-2
-        bucketnames: tukktukk-logs-storage
+        bucketnames: amzdraw-logs-bucket
         insecure: false
         s3forcepathstyle: false
       tsdb_shipper:
