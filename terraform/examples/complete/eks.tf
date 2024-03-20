@@ -43,16 +43,16 @@ module "eks" {
     }
   }
 
-#   # 외부 암호화 키 사용 설정
+  # 외부 암호화 키 사용 설정
 
-#   #  AWS에서 생성한 KMS 키 대신 사용자가 지정한
-#   # KMS 키를 사용하겠다는 것을 나타냅니다.
-#   create_kms_key = false 
+  #  AWS에서 생성한 KMS 키 대신 사용자가 지정한
+  # KMS 키를 사용하겠다는 것을 나타냅니다.
+  create_kms_key = false 
 
-#   cluster_encryption_config = {
-#     resources        = ["secrets"] # 암호화할 리소스 유형을 지정 여기서는 Kubernetes 시크릿을 암호화
-#   provider_key_arn = module.kms.key_arn # 사용할 KMS 키의 ARN 지정. 이 키는 module.kms에서 생성, 지정
-# }
+  cluster_encryption_config = {
+    resources        = ["secrets"] # 암호화할 리소스 유형을 지정 여기서는 Kubernetes 시크릿을 암호화
+  provider_key_arn = module.kms.key_arn # 사용할 KMS 키의 ARN 지정. 이 키는 module.kms에서 생성, 지정
+}
 
 # 추가 IAM 역할 정책 설정
 # 이 설정은 EKS 클러스터에 필요한 추가적인 IAM 정책을 연결할 때 사용
@@ -230,17 +230,37 @@ resource "aws_iam_policy" "additional" {
   })
 }
 
-# # KMS 모듈 설정 - 클러스터 암호화에 사용될 KMS 키를 생성 및 관리
-# module "kms" { 
-#   source  = "terraform-aws-modules/kms/aws"
-#   version = "~> 1.5"
+# KMS 모듈 설정 - 클러스터 암호화에 사용될 KMS 키를 생성 및 관리
+module "kms" { 
+  source  = "terraform-aws-modules/kms/aws"
+  version = "~> 1.5"
 
-#   aliases               = ["amzdraw-eks/${var.infra_name}"]
-#   description           = "${var.infra_name} cluster encryption key"
-#   enable_default_policy = true
-#   key_owners            = [data.aws_caller_identity.current.arn]
+  aliases               = ["amzdraw-eks/${var.infra_name}"]
+  description           = "${var.infra_name} cluster encryption key"
+  enable_default_policy = true
+  key_owners            = [data.aws_caller_identity.current.arn]
 
-#   tags = {
-#     "Name" = var.infra_name
-#   }
-# }
+  tags = {
+    "Name" = var.infra_name
+  }
+}
+resource "aws_iam_policy" "kms_delete_alias_policy" {
+  name        = "KMSDeleteAliasPolicy"
+  description = "Allows deletion of KMS alias"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "kms:DeleteAlias"
+        Resource = "*" # 보안상의 이유로, 가능하다면 특정 리소스에 대한 권한을 제한해야 합니다.
+      },
+    ]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "attach_kms_delete_alias_policy" {
+  user       = "DOHYUNG"
+  policy_arn = aws_iam_policy.kms_delete_alias_policy.arn
+}

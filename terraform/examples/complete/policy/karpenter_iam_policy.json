@@ -1,5 +1,5 @@
+// C:\AMZMall_Dev_GitOps\terraform\examples\complete\policy\karpenter_iam_policy.json
 {
-    "Version": "2012-10-17",
     "Statement": [
         {
             "Action": [

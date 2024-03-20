@@ -56,37 +56,37 @@ resource "kubernetes_service_account" "cluster_autoscaler" {
   }
 }
 
-# Cluster Autoscaler Helm Release
-resource "helm_release" "cluster_autoscaler" {
-  name       = "cluster-autoscaler"
-  namespace  = "kube-system"
-  chart      = "cluster-autoscaler"
-  repository = "https://kubernetes.github.io/autoscaler"
+# # Cluster Autoscaler Helm Release
+# resource "helm_release" "cluster_autoscaler" {
+#   name       = "cluster-autoscaler"
+#   namespace  = "kube-system"
+#   chart      = "cluster-autoscaler"
+#   repository = "https://kubernetes.github.io/autoscaler"
 
-  set {
-    name  = "autoDiscovery.clusterName"
-    value = var.cluster_name
-  }
+#   set {
+#     name  = "autoDiscovery.clusterName"
+#     value = var.cluster_name
+#   }
 
-  set {
-    name  = "awsRegion"
-    value = var.aws_region
-  }
+#   set {
+#     name  = "awsRegion"
+#     value = var.aws_region
+#   }
 
-  set {
-    name  = "rbac.serviceAccount.create"
-    value = "false"
-  }
+#   set {
+#     name  = "rbac.serviceAccount.create"
+#     value = "false"
+#   }
 
-  set {
-    name  = "rbac.serviceAccount.name"
-    value = kubernetes_service_account.cluster_autoscaler.metadata[0].name
-  }
+#   set {
+#     name  = "rbac.serviceAccount.name"
+#     value = kubernetes_service_account.cluster_autoscaler.metadata[0].name
+#   }
 
-  set {
-    name  = "rbac.serviceAccount.annotations.eks.amazonaws.com/role-arn"
-    value = aws_iam_role.ca_iam_role.arn
-  }
+#   set {
+#     name  = "rbac.serviceAccount.annotations.eks.amazonaws.com/role-arn"
+#     value = aws_iam_role.ca_iam_role.arn
+#   }
 
-  values = [file("${path.module}/values/ca-values.yaml")]
-}
+#   values = [file("${path.module}/values/ca-values.yaml")]
+# }
