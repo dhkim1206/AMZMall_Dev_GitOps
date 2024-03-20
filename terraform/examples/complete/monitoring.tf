@@ -68,6 +68,10 @@ resource "helm_release" "loki" {
     name  = "serviceAccount.name"
     value = kubernetes_service_account.loki_service_account.metadata[0].name
   }
+  set {
+    name  = "global.labels.app"
+    value = "loki"
+  }
 
   values = [file("${path.module}/values/loki-values.yaml")]
 }
