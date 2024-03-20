@@ -21,7 +21,7 @@ nodeSelector:
 hpa:
   enabled: true
   minReplicas: 1
-  maxReplicas: 6
+  maxReplicas: 4
   targetCPUUtilizationPercentage: 50
 
 resources:
