@@ -5,7 +5,7 @@ replicaCount: 2
 image:
   repository: 009946608368.dkr.ecr.ap-northeast-2.amazonaws.com/amzdraw-dev
   pullPolicy: IfNotPresent
-  tag: 2024-03-19T16-02-37
+  tag: 2024-03-20T11-49-06
 
 imagePullSecrets:
   - name: ecr-secret
