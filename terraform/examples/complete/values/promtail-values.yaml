@@ -1,3 +1,4 @@
+# C:\Users\user\Documents\GitHub\AMZMall_Dev_GitOps\terraform\examples\complete\values\promtail-values.yaml
 config:
   clients:
   - url: http://loki-loki-distributed-gateway.monitoring/loki/api/v1/push
