@@ -9,7 +9,7 @@ spec:
       values: ["spot"]
   limits:
     resources:
-      cpu: 1000
+      cpu: 1000m
   providerRef:
     name: default
   ttlSecondsAfterEmpty: 30
