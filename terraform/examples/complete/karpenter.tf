@@ -82,12 +82,11 @@ resource "helm_release" "karpenter" {
   namespace  = "kube-system"
   repository = "https://charts.karpenter.sh"
   chart      = "karpenter"
-
+  
   set {
     name  = "replicas"
     value = 2
   }
-  
   set {
     name  = "clusterName"
     value = var.cluster_name
