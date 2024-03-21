@@ -15,6 +15,6 @@ terraform {
     bucket         = "amz-draw-dev-bucket-tfstate" # S3 버킷 이름
     key            = "terraform/terraform.tfstate" # tfstate 저장 경로
     region         = "ap-northeast-2"
-    dynamodb_table = "terraform-dev-tfstate-lock" # dynamodb table 이름
+    dynamodb_table = "terraform-dev-tfstate-lock2" # dynamodb table 이름
     }
 }

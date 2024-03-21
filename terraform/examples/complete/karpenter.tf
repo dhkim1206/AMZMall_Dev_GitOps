@@ -84,6 +84,11 @@ resource "helm_release" "karpenter" {
   chart      = "karpenter"
 
   set {
+    name  = "replicas"
+    value = 2
+  }
+  
+  set {
     name  = "clusterName"
     value = var.cluster_name
   }
