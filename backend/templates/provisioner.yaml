@@ -7,9 +7,13 @@ spec:
     - key: karpenter.sh/capacity-type
       operator: In
       values: ["spot"]
+    - key: kubernetes.io/arch
+      operator: In
+      values:
+        - amd64
   limits:
     resources:
-      cpu: 1000m
+      cpu: '1'
   providerRef:
     name: default
   ttlSecondsAfterEmpty: 30
