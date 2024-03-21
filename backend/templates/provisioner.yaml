@@ -1,7 +1,7 @@
 apiVersion: karpenter.sh/v1alpha5
 kind: Provisioner
 metadata:
-  name: Provisioner
+  name: karpenter-provisioner
 spec:
   requirements:
     - key: karpenter.sh/capacity-type
