@@ -11,6 +11,9 @@ spec:
       operator: In
       values:
         - amd64
+    - key: "node_group"
+      operator: "In"
+      values: ["service_node_group"]
   limits:
     resources:
       cpu: '1'
