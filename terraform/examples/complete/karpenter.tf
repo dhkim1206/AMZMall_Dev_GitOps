@@ -45,6 +45,12 @@ resource "kubernetes_service_account" "karpenter_service_account" {
   }
 }
 
+resource "aws_iam_instance_profile" "karpenter_instance_profile" {
+  name = "karpenter-instance-profile-${var.infra_name}"
+  role = aws_iam_role.karpenter_iam_role.name
+}
+
+
 # Karpenter Helm Release 설정
 resource "helm_release" "karpenter" {
   namespace  = "kube-system"
@@ -64,8 +70,9 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "aws.defaultInstanceProfile"
-    value = "your-instance-profile-name" # 적절한 인스턴스 프로필 이름으로 변경하세요.
+    value = aws_iam_instance_profile.karpenter_instance_profile.name
   }
+
 
   set {
     name  = "serviceAccount.create"

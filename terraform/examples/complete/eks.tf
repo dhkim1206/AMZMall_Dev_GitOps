@@ -108,9 +108,9 @@ iam_role_additional_policies = {
       tags = {
         ExtraTag = "service_node_group"
       }
-    labels = {
-      node_group = "service_node_group"
-    }
+      labels = {
+        node_group = "service_node_group"
+      }
     }
     # 에코 시스템용 노드 그룹
     eco_system_node_group = {
@@ -129,22 +129,6 @@ iam_role_additional_policies = {
         node_group = "eco_system_node_group"
       }
     }
-    # search_node_group = {
-    #   name = "search_node_group"
-
-    #   instance_types = ["t3.medium"]
-    #   capacity_type  = "ON_DEMAND"
-
-    #   min_size     = 1
-    #   max_size     = 1
-    #   desired_size = 1
-    #   # local.azs에서 az의 인덱스를 사용하여 각 서브넷 ID에 접근
-    #   subnet_ids     =  [aws_subnet.rds_subnet_2.id]
-
-    #   tags = {
-    #     ExtraTag = "search_node_group"
-    #   }
-    # }
   }
 
   # aws-auth configmap 관리 설정 - 클러스터 접근 권한 관리
@@ -175,6 +159,7 @@ iam_role_additional_policies = {
   # 클러스터 태그 설정
   tags = {
     "Name" = var.infra_name
+    "karpenter.sh/discovery" = var.cluster_name
   }
   # Fargate 프로필과 동시에 생성하려고 하면 출동 발생 할 수 있음
   # # OIDC Identity provider
@@ -183,6 +168,7 @@ iam_role_additional_policies = {
       client_id = "sts.amazonaws.com"
     }
   }
+  
 }
 
 ################################################################################

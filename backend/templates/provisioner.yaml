@@ -32,6 +32,8 @@ spec:
       memory: 1000Gi
   providerRef:
     name: default
+  launchTemplate:
+    name: my-launch-template
   ttlSecondsAfterEmpty: 30
 
   

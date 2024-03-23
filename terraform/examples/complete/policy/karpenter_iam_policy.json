@@ -37,7 +37,10 @@
         {
             "Effect": "Allow",
             "Action": "iam:PassRole",
-            "Resource": "arn:aws:iam::009946608368:role/KarpenterNodeRole-amz-draw-dev-cluster",
+            "Resource": [
+                "arn:aws:iam::009946608368:role/KarpenterNodeRole-amz-draw-dev-cluster",
+                "arn:aws:iam::009946608368:role/amz-draw-dev-cluster-karpenter-role"
+            ],
             "Sid": "PassNodeIAMRole"
         },
         {
