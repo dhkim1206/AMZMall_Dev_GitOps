@@ -51,38 +51,38 @@ resource "aws_iam_instance_profile" "karpenter_instance_profile" {
 }
 
 
-# # Karpenter Helm Release 설정
-# resource "helm_release" "karpenter" {
-#   namespace  = "kube-system"
-#   name       = "karpenter"
-#   chart      = "karpenter"
-#   repository = "https://charts.karpenter.sh"
+# Karpenter Helm Release 설정
+resource "helm_release" "karpenter" {
+  namespace  = "kube-system"
+  name       = "karpenter"
+  chart      = "karpenter"
+  repository = "https://charts.karpenter.sh"
 
-#   set {
-#     name  = "clusterName"
-#     value = var.cluster_name
-#   }
+  set {
+    name  = "clusterName"
+    value = var.cluster_name
+  }
 
-#   set {
-#     name  = "clusterEndpoint"
-#     value = module.eks.cluster_endpoint
-#   }
+  set {
+    name  = "clusterEndpoint"
+    value = module.eks.cluster_endpoint
+  }
 
-#   set {
-#     name  = "aws.defaultInstanceProfile"
-#     value = aws_iam_instance_profile.karpenter_instance_profile.name
-#   }
+  set {
+    name  = "aws.defaultInstanceProfile"
+    value = aws_iam_instance_profile.karpenter_instance_profile.name
+  }
 
 
-#   set {
-#     name  = "serviceAccount.create"
-#     value = "false"
-#   }
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
 
-#   set {
-#     name  = "serviceAccount.name"
-#     value = kubernetes_service_account.karpenter_service_account.metadata[0].name
-#   }
+  set {
+    name  = "serviceAccount.name"
+    value = kubernetes_service_account.karpenter_service_account.metadata[0].name
+  }
 
-#   depends_on = [aws_iam_role_policy_attachment.karpenter_iam_policy_attach]
-# }
+  depends_on = [aws_iam_role_policy_attachment.karpenter_iam_policy_attach]
+}
