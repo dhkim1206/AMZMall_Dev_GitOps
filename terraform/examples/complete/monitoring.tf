@@ -53,39 +53,39 @@ resource "kubernetes_service_account" "loki_service_account" {
   }
 }
 
-resource "helm_release" "loki" {
-  name       = "loki"
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "loki-distributed"
-  namespace  = "monitoring"
+# resource "helm_release" "loki" {
+#   name       = "loki"
+#   repository = "https://grafana.github.io/helm-charts"
+#   chart      = "loki-distributed"
+#   namespace  = "monitoring"
 
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
+#   set {
+#     name  = "serviceAccount.create"
+#     value = "false"
+#   }
 
-  set {
-    name  = "serviceAccount.name"
-    value = kubernetes_service_account.loki_service_account.metadata[0].name
-  }
-  set {
-    name  = "global.labels.app"
-    value = "loki"
-  }
+#   set {
+#     name  = "serviceAccount.name"
+#     value = kubernetes_service_account.loki_service_account.metadata[0].name
+#   }
+#   set {
+#     name  = "global.labels.app"
+#     value = "loki"
+#   }
 
-  values = [file("${path.module}/values/loki-values.yaml")]
-}
+#   values = [file("${path.module}/values/loki-values.yaml")]
+# }
 
 
-# promtail 배포
-resource "helm_release" "promtail" {
-  name       = "promtail"
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "promtail"
-  namespace  = "monitoring"
+# # promtail 배포
+# resource "helm_release" "promtail" {
+#   name       = "promtail"
+#   repository = "https://grafana.github.io/helm-charts"
+#   chart      = "promtail"
+#   namespace  = "monitoring"
 
-  values = [file("${path.module}/values/promtail-values.yaml")]
-}
+#   values = [file("${path.module}/values/promtail-values.yaml")]
+# }
 
 # prometheus, grafana 설치
 resource "helm_release" "prometheus_grafana" {
