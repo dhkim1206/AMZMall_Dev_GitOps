@@ -1,3 +1,6 @@
+# Architecture
+![aws3-03 drawio](https://github.com/dhkim1206/AMZMall_Dev_GitOps/assets/69470424/2a5c61a9-b31d-4341-b301-89a7bae50fca)
+
 
 ## 🧑🏻‍💻 AMZMall_Dev_GitOps  
 GitOps test version 1.0
