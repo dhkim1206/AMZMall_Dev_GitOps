@@ -48,7 +48,7 @@ GitOps test version 1.0
 
 ```
 - `backend/`: 백엔드 애플리케이션에 대한 Kubernetes 차트 및 템플릿이 포함되어 있습니다.
-- `frontend/`: 프론트엔드 애플리케이션에 대한 Kubernetes 차트 및 템플릿이 포함되어 있습니다.
+- `frontend/`: 프론트엔드 애플리케이션에 대한 Kubernetes 차트 및 템플릿이 포함되어 있으나 s3외 CloudFront로 프론트엔드 어플리케이션에 대한 배포 방식을 바꿨기에 사용되지 않는 코드입니다.
 
 각 디렉토리에는 다음과 같은 파일이 있습니다
 
