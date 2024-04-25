@@ -8,6 +8,7 @@ GitOps test version 1.0
 
 ### 🗂️ directory
 ```
+
 ├── backend
 │   ├── Chart.yaml
 │   ├── values.yaml
@@ -16,14 +17,35 @@ GitOps test version 1.0
 │       ├── deployment.yaml
 │       ├── service.yaml
 │       └── ingress.yaml 
-└── frontend
-    ├── Chart.yaml
-    ├── values.yaml
-    └── templates
-        ├── _helpers.tpl
-        ├── deployment.yaml
-        ├── service.yaml
-        └── ingress.yaml
+├── frontend
+│   ├── Chart.yaml
+│   ├── values.yaml
+│   └── templates
+│       ├── _helpers.tpl
+│       ├── deployment.yaml
+│       ├── service.yaml
+│       └── ingress.yaml
+└── terraform
+    └── examples
+        └── complete
+            ├── policy
+            ├── values
+            ├── README.md
+            ├── alb.tf
+            ├── argocd.tf
+            ├── ca.tf
+            ├── cdn.tf
+            ├── ebs.tf
+            ├── eks.tf
+            ├── karpenter.tf
+            ├── monitoring.tf
+            ├── outputs.tf
+            ├── provider.tf
+            ├── rds.tf
+            ├── terraform.tfvars
+            ├── var.tf
+            └── versions.tf
+
 ```
 - `backend/`: 백엔드 애플리케이션에 대한 Kubernetes 차트 및 템플릿이 포함되어 있습니다.
 - `frontend/`: 프론트엔드 애플리케이션에 대한 Kubernetes 차트 및 템플릿이 포함되어 있습니다.
